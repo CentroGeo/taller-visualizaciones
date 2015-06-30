@@ -1,0 +1,4 @@
+.vagrant
+*.box
+node_modules
+npm-debug*
