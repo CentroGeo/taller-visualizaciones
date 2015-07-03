@@ -7,12 +7,13 @@ Vagrant.configure("2") do |config|
 		v.customize ["modifyvm", :id, "--cpus", "1"]
 		v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
 	end
-	
+
 	# Every Vagrant virtual environment requires a box to build off of.
 
 	# The url from where the 'config.vm.box' box will be fetched if it
 	# doesn't already exist on the user's system.
-	config.vm.box = "http://dev.centrogeo.org.mx/fossgis/viz-base-v0.2.box"
+	config.vm.box_url = "http://dev.centrogeo.org.mx/fossgis/viz-base-v0.2.box"
+	config.vm.box = "viz-base-v0.2.box"
 
 	# Boot with a GUI so you can see the screen. (Default is headless)
 	# config.vm.boot_mode = :gui
@@ -38,4 +39,3 @@ Vagrant.configure("2") do |config|
 	# Enable provisioning with a shell script.
 	#config.vm.provision :shell, :path => "install.sh"
 end
-
