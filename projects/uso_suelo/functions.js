@@ -1,55 +1,6 @@
-function main() {
-cartodb.createVis('map', 'https://plabloedu.cartodb.com/api/v2/viz/4f90b07c-1f88-11e5-81f6-0e853d047bba/viz.json', {
-	//shareable: true,
-	title: true,
-	description: true,
-	//search: true,
-	tiles_loader: true,
-	center_lat: 19.411,
-	center_lon: -99.16,
-	zoom: 16
-})
-.done(function(vis, layers) {
-	// layer 0 is the base layer, layer 1 is cartodb layer
-	// setInteraction is disabled by default
-	/*layers[0].setInteraction(true);
-	layers[0].on('featureOver', function(e, latlng, pos, data) {
-	cartodb.log.log(e, latlng, pos, data);
-	});*/
-	layers[1].setInteraction(true);
-	layers[1].getSubLayer(0).setInteractivity("cartodb_id, the_geom")
-	//alert("Layer has " + layers[1].getSubLayerCount() + " layer(s).");
-	//console.log(layers[1].getSubLayer(0));
-	layers[1].getSubLayer(0).on('featureClick', function(e, latlng, pos, data) {
-          alert("Hey! You clicked " + data.the_geom);
-    });
-	// you can get the native map to work with it
-	var map = vis.getNativeMap();
-	// now, perform any operations you need
-	// map.setZoom(3);
-	// map.panTo([50.5, 30.5]);
-})
-.error(function(err) {
-  console.log(err);
-});
 
-var sql = new cartodb.SQL({ user: 'plabloedu' });
-var sqlStr = "SELECT avg(vivienda) as v_pro, avg(comercio) as c_pro, avg(equip) as e_pro, avg(ocio) as o_pro FROM usos_colonia"
-sql.execute(sqlStr)
-  .done(function(data) {
-	//console.log(data.rows);
-	hazRadar(data.rows);
-  })
-  .error(function(errors) {
-	// errors contains a list of errors
-	console.log("errors:" + errors);
-  })
-
-}
- window.onload = main;
-//
-// hacer radar
-
+//Hace la gráfica de radar inicial
+//data es un json con los valores promedio de las variables
 function hazRadar(data){
 	var w = 500,
 		h = 500;
@@ -86,4 +37,25 @@ function hazRadar(data){
 	// //Call function to draw the Radar chart
 	// //Will expect that data is in %'s
 	RadarChart.draw("#chart", d, mycfg);
+}
+
+//actualiza la gráfica de radar. data es un json con el
+//feature seleccionado (un feature collection con un sólo feature)
+function updateRadar(data){
+	console.log(data.features[0].properties);
+	variables = data.features[0].properties
+	//den = 1/(variables.e_pro + variables.c_pro + variables.o_pro + variables.v_pro)
+	var d = [[//{'axis':'vivienda','value':variables.v_pro*den},
+			 {'axis':'comercio','value':variables.c_pro*den},
+			 {'axis':'servicios','value': variables.e_pro*den},
+			 {'axis':'ocio','value':variables.o_pro*den}]]
+
+	// var text = d3.select("#chart").selectAll(".axis")
+	//   .data(data, function(d) { return d; });
+	// console.log(text)
+	 var radar = d3.select("#chart")
+	 var ejes = radar.selectAll(".axis")
+	// ejes.data(data).enter().append(d)
+	 console.log(ejes.data(['comercio']))
+	// //console.log()
 }

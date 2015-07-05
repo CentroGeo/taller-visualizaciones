@@ -72,6 +72,22 @@ window.onload = function() {
     style = options.style || HIGHLIGHT_STYLE;
 
 
+    //Con esta consulta agarramos los datos promedio para incluirlos siempre
+    //en la gráfica de radar
+    var sqlAvg = new cartodb.SQL({ user: 'plabloedu' });
+    var sqlStr = "SELECT avg(vivienda) as v_pro, avg(comercio) as c_pro, avg(equip) as e_pro, avg(ocio) as o_pro FROM usos_colonia"
+    sqlAvg.execute(sqlStr)
+      .done(function(data) {
+          //Llamamos la función para hacer la gráfica de radar
+          hazRadar(data.rows);
+      })
+      .error(function(errors) {
+    	// errors contains a list of errors
+    	console.log("errors:" + errors);
+      })
+
+
+
     //Esta es la función que configura la interactividad de la capa
     function geometryClick(username, map, layer, options) {
         var polygons = {};
@@ -82,7 +98,7 @@ window.onload = function() {
         // Traemos la geometría del polígono clickeado
         function fetchGeometry(id){
             var sql = new cartodb.SQL({ user: username, format: 'geojson' });
-            sql_stmt = "select cartodb_id, the_geom  from (" +layer.getSQL() + ") as _wrap where _wrap.cartodb_id="+ id
+            sql_stmt = "select cartodb_id, vivienda, comercio, equip, ocio, the_geom  from (" +layer.getSQL() + ") as _wrap where _wrap.cartodb_id="+ id
             sql.execute(sql_stmt).
             done(function(geojson) {
                 //Cuando el query regrese los datos, agarramos su geometría,
@@ -92,6 +108,8 @@ window.onload = function() {
                 map.addLayer(geo)
                 //También la añadimos en polygonsHighlighted
                 polygonsHighlighted.push(geo)
+                //Actualizamos la gráfica de radar
+                updateRadar(geojson)
             })
             .error(function(errors) {
                 // errors contains a list of errors
@@ -100,12 +118,14 @@ window.onload = function() {
         }
 
 
+        //Llama a las funciones que actualizan el polígono seleccionado
         function featureClick(e, pos, latlng, data) {
             //console.log(data)
             featureOut();
             fetchGeometry(data.cartodb_id)
         }
 
+        //Remueve el polígono seleccionado anteriormente
         function featureOut() {
             var pol = polygonsHighlighted;
             for(var i = 0; i < pol.length; ++i) {
