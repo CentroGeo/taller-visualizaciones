@@ -33,7 +33,7 @@ var RadarChart = {
         tooltip.select("rect").classed("visible", 0);
       }else{
         tooltip.classed("visible", 1);
-            
+
             var x = d3.event.x;
                 y = d3.event.y;
 
@@ -236,8 +236,8 @@ var RadarChart = {
             d3.select(this).classed(classed);
           })
           // styles should only be transitioned with css
-          .style('stroke', function(d, i) { return cfg.color(i); })
-          .style('fill', function(d, i) { return cfg.color(i); })
+          //.style('stroke', function(d, i) { return cfg.color(i); })
+          //.style('fill', function(d, i) { return cfg.color(i); })
           .transition().duration(cfg.transitionDuration)
             // svg attrs with js
             .attr('points',function(d) {
