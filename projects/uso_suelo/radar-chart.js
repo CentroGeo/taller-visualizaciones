@@ -302,7 +302,7 @@ var RadarChart = {
               d3.select(this).classed(classed);
             })
             // styles should only be transitioned with css
-            .style('fill', function(d) { return cfg.color(d[1]); })
+            //.style('fill', function(d) { return cfg.color(d[1]); })
             .transition().duration(cfg.transitionDuration)
               // svg attrs with js
               .attr('r', cfg.radius)
