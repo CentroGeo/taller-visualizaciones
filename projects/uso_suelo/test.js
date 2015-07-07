@@ -2,25 +2,25 @@ var data = [
       {
         className: 'germany', // optional can be used for styling
         axes: [
-          {axis: "strength", value: 13}, 
-          {axis: "intelligence", value: 6}, 
-          {axis: "charisma", value: 5},  
-          {axis: "dexterity", value: 9},  
+          {axis: "strength", value: 13},
+          {axis: "intelligence", value: 6},
+          {axis: "charisma", value: 5},
+          {axis: "dexterity", value: 9},
           {axis: "luck", value: 2}
         ]
       },
 	  {
         className: 'bla', // optional can be used for styling
         axes: [
-          {axis: "strength", value: 43}, 
-          {axis: "intelligence", value: 5}, 
-          {axis: "charisma", value: 35},  
-          {axis: "dexterity", value: 39},  
+          {axis: "strength", value: 43},
+          {axis: "intelligence", value: 5},
+          {axis: "charisma", value: 35},
+          {axis: "dexterity", value: 39},
           {axis: "luck", value: 24}
         ]
       }
     ];
-	
+
 	var chart = RadarChart.chart();
 	var svg = d3.select('body').append('svg')
 	.attr('width', 600)
@@ -28,55 +28,55 @@ var data = [
 
 // draw one
 svg.append('g').classed('focus', 1).datum(data).call(chart);
-    
+
 var data2 = [
       {
         className: 'germany', // optional can be used for styling
         axes: [
-          {axis: "strength", value: 13}, 
-          {axis: "intelligence", value: 6}, 
-          {axis: "charisma", value: 5},  
-          {axis: "dexterity", value: 9},  
+          {axis: "strength", value: 13},
+          {axis: "intelligence", value: 6},
+          {axis: "charisma", value: 5},
+          {axis: "dexterity", value: 9},
           {axis: "luck", value: 2}
         ]
       },
 	  {
         className: 'argentina', // optional can be used for styling
         axes: [
-          {axis: "strength", value: 43}, 
-          {axis: "intelligence", value: 22}, 
-          {axis: "charisma", value: 7},  
-          {axis: "dexterity", value: 8},  
+          {axis: "strength", value: 43},
+          {axis: "intelligence", value: 22},
+          {axis: "charisma", value: 7},
+          {axis: "dexterity", value: 8},
           {axis: "luck", value: 29}
         ]
       }
-    ];	
-	
+    ];
+
 	var game = svg.selectAll('g.focus').data([data2]);
 	game.enter().append('g').classed('focus', 1);
 	//game.call(chart); //para actualizar chart - no es necesario llamar exit().remove()
-	
-	
+
+
 	var data3 = [
       {
         className: 'bla', // optional can be used for styling
         axes: [
-          {axis: "strength", value: 14}, 
-          {axis: "intelligence", value: 52}, 
-          {axis: "charisma", value: 78},  
-          {axis: "dexterity", value: 38},  
+          {axis: "strength", value: 14},
+          {axis: "intelligence", value: 52},
+          {axis: "charisma", value: 78},
+          {axis: "dexterity", value: 38},
           {axis: "luck", value: 9}
         ]
       }]
-	
-	
-	
 
-	
-	
-	
-	
-/*	
+
+
+
+
+
+
+
+/*
 	function randomDataset() {
       return data.map(function(d) {
         return {
@@ -87,7 +87,7 @@ var data2 = [
         };
       });
     }
-	
+
 	 var chart = RadarChart.chart();
   var cfg = chart.config(); // retrieve default config
   var svg = d3.select('body').append('svg')
@@ -113,8 +113,7 @@ var data2 = [
       .call(chart);
     setTimeout(render, 1000);
   }
-  
+
   render();
-  
+
   */
-  
