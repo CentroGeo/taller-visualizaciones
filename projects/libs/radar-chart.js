@@ -25,7 +25,8 @@ var RadarChart = {
     axisJoin: function(d, i) {
       return d.className || i;
     },
-    transitionDuration: 300
+    transitionDuration: 300,
+    tickLabels: true
   },
   chart: function() {
     // default config
@@ -201,22 +202,25 @@ var RadarChart = {
               .attr('y', function(d, i){ return d.yOffset+ (cfg.h/2-radius2)+getVerticalPosition(i, radius2, cfg.factorLegend); });
           }
         }
+        // tickLabels
         //Text indicating at what % each level is
-        var radius = cfg.factor*Math.min(cfg.w/2, cfg.h/2);
-        for(var j=0; j<cfg.levels; j++){
-          var levelFactor = cfg.factor*radius*((j+1)/cfg.levels);
-          container.selectAll(".levels")
-           .data([1]) //dummy data
-           .enter()
-           .append("svg:text")
-           .attr("x", function(d){return levelFactor*(1-cfg.factor*Math.sin(0));})
-           .attr("y", function(d){return levelFactor*(1-cfg.factor*Math.cos(0));})
-           .attr("class", "legend")
-           .style("font-family", "sans-serif")
-           .style("font-size", "10px")
-           .attr("transform", "translate(" + (cfg.w/2-levelFactor + cfg.ToRight) + ", " + (cfg.h/2-levelFactor) + ")")
-           .attr("fill", "#737373")
-           .text(cfg.Format((j+1)*cfg.maxValue/cfg.levels));
+        if (cfg.tickLabels ){
+          var radius = cfg.factor*Math.min(cfg.w/2, cfg.h/2);
+          var tickLabel = container.selectAll('.tickLabel').data([1]);
+          for(var j=0; j<cfg.levels; j++){
+            var levelFactor = cfg.factor*radius*((j+1)/cfg.levels);
+             tickLabel.enter()
+             .append("svg:text")
+             .attr("x", function(d){return levelFactor*(1-cfg.factor*Math.sin(0));})
+             .attr("y", function(d){return levelFactor*(1-cfg.factor*Math.cos(0));})
+             .attr("class", "tickLabel")
+             .attr("opacity", "1")
+             .style("font-family", "sans-serif")
+             .style("font-size", "10px")
+             .attr("transform", "translate(" + (cfg.w/2-levelFactor + cfg.ToRight) + ", " + (cfg.h/2-levelFactor) + ")")
+             .attr("fill", "#737373")
+             .text(cfg.Format((j+1)*cfg.maxValue/cfg.levels));
+          }
         }
         // content
         data.forEach(function(d){
