@@ -3,15 +3,18 @@ var dataFechas;
 // funcion para detectar cmabio en el tiempo de la capa de torque de cartoDB y
 // llamar actualizacion del radar
 function timeChange(torqueLayer) {
+	RadarChart.defaultConfig.tickLabels = true;
 	var torqueTime = $('#torque-time');
 	// each time time changes, move the slider
+	var currentDate = "2015-02-25";
 	torqueLayer.on('change:time', function(changes) {
 	  //convertir fecha de mm/dd/aaaa a aaaa-mm-dd
 	  var date = jQuery.datepicker.formatDate( "yy-mm-dd", new Date(changes.time));
 	  torqueTime.text(date);
 		// casi al principio cartoDB no trae bien la fecha y salen NaNs...
-	  if (date != "NaN-NaN-NaN"){
+	  if (date != "NaN-NaN-NaN" && date != currentDate){
 		  updateRadar(dataFechas, date);
+			currentDate = jQuery.datepicker.formatDate( "yy-mm-dd", new Date(changes.time));
 	  }
 	});
 }
@@ -119,6 +122,7 @@ var chart = RadarChart.chart();
 // que son puros 0s
 RadarChart.defaultConfig.maxValue = 100;
 RadarChart.defaultConfig.transitionDuration = 250;
+RadarChart.defaultConfig.tickLabels = false;
 
 // funcion para hacer radar inicial
 function hazRadar(){
