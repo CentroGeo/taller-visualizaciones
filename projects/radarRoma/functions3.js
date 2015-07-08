@@ -118,7 +118,7 @@ var chart = RadarChart.chart();
 // maxValue importante para que no tenga conflicto con los datos iniciales
 // que son puros 0s
 RadarChart.defaultConfig.maxValue = 100;
-RadarChart.defaultConfig.transitionDuration = 200;
+RadarChart.defaultConfig.transitionDuration = 250;
 
 // funcion para hacer radar inicial
 function hazRadar(){
