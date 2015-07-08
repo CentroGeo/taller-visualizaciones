@@ -31,7 +31,7 @@ var RadarChart = {
   chart: function() {
     // default config
     var cfg = Object.create(RadarChart.defaultConfig);
-    var toolip;
+    var tooltip;
     function setTooltip(msg){
       if(msg == false){
         tooltip.classed("visible", 0);
@@ -39,9 +39,10 @@ var RadarChart = {
       }else{
         tooltip.classed("visible", 1);
 
-            var x = d3.event.x;
-                y = d3.event.y;
+            var x = d3.event.layerX;
+                y = d3.event.layerY;
 
+        //console.log(d3.event);
         tooltip.select("text").classed('visible', 1).style("fill", cfg.tooltipColor);
         var padding=5;
         var bbox = tooltip.select("text").text(msg).node().getBBox();
