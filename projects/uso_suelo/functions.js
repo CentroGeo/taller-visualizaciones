@@ -10,15 +10,21 @@ function hazRadar(data){
 	//Hace la gráfica de radar inicial
 	//data es un json con los valores promedio de las variables
 
+	//TODO: el maxValue debería venir de una consulta
+
+	RadarChart.defaultConfig.w = 500;
+	RadarChart.defaultConfig.h = 500;
+	RadarChart.defaultConfig.maxValue = 75;
+
 	//Los datos
-	den = 1/(data[0].e_pro + data[0].c_pro + data[0].o_pro + data[0].v_pro)
 	var d = [
 		{
 			className: 'promedios',
 			axes: [
-			{axis: "comercio", value: 0.1*(data[0].c_pro*den)},
-			{axis: "servicios", value: data[0].e_pro*den},
-			{axis: "ocio", value: data[0].o_pro*den}
+			{axis: "vivienda", value: 0.01*(data[0].v_pro)},
+			{axis: "comercio", value: 0.1*(data[0].c_pro)},
+			{axis: "servicios", value: data[0].e_pro},
+			{axis: "ocio", value: data[0].o_pro}
 			]
 		}
 	]
@@ -34,15 +40,14 @@ function hazRadar(data){
 //feature seleccionado (un feature collection con un sólo feature)
 function updateRadar(data){
 	variables = data.features[0].properties
-	//console.log(variables)
-	//den = 1/(variables.e_pro + variables.c_pro + variables.o_pro + variables.v_pro)
 	var d = [
 		{
 			className: 'colonia',
 			axes: [
-			{axis: "comercio", value: 0.1*(variables.comercio)},
-			{axis: "servicios", value: variables.ocio},
-			{axis: "ocio", value: variables.equip}
+			{axis: "vivienda", value: 0.01*variables.vivienda},
+			{axis: "comercio", value: 0.1*variables.comercio},
+			{axis: "servicios", value: variables.equip},
+			{axis: "ocio", value: variables.ocio}
 			]
 		}
 	]

@@ -110,6 +110,12 @@ window.onload = function() {
                 polygonsHighlighted.push(geo)
                 //Actualizamos la gráfica de radar
                 updateRadar(geojson)
+                var sql = new cartodb.SQL({ user: username });
+                var queryBounds = "select the_geom from usos_colonia where cartodb_id=" + id
+                sql.getBounds(queryBounds).done(function(bounds) {
+                    map.fitBounds(bounds)
+                })
+                .error(function(errors){console.log("errors:" + errors);})
             })
             .error(function(errors) {
                 // errors contains a list of errors

@@ -15,9 +15,13 @@ var RadarChart = {
     axisText: true,
     circles: true,
     radius: 5,
+    ToRight: 5,//Cuantos px a la derecha de la linea van los números
+    TranslateX: 800,//para mover el chart dentro de su svg
+    TranslateY: 30,
     backgroundTooltipColor: "#555",
     backgroundTooltipOpacity: "0.7",
     tooltipColor: "white",
+    Format : d3.format('f'),
     axisJoin: function(d, i) {
       return d.className || i;
     },
@@ -50,6 +54,7 @@ var RadarChart = {
         .attr("rx","5").attr("ry","5")
         .style("fill", cfg.backgroundTooltipColor).style("opacity", cfg.backgroundTooltipOpacity);
         tooltip.attr("transform", "translate(" + x + "," + y + ")")
+
       }
     }
     function radar(selection) {
@@ -196,7 +201,23 @@ var RadarChart = {
               .attr('y', function(d, i){ return d.yOffset+ (cfg.h/2-radius2)+getVerticalPosition(i, radius2, cfg.factorLegend); });
           }
         }
-
+        //Text indicating at what % each level is
+        var radius = cfg.factor*Math.min(cfg.w/2, cfg.h/2);
+        for(var j=0; j<cfg.levels; j++){
+          var levelFactor = cfg.factor*radius*((j+1)/cfg.levels);
+          container.selectAll(".levels")
+           .data([1]) //dummy data
+           .enter()
+           .append("svg:text")
+           .attr("x", function(d){return levelFactor*(1-cfg.factor*Math.sin(0));})
+           .attr("y", function(d){return levelFactor*(1-cfg.factor*Math.cos(0));})
+           .attr("class", "legend")
+           .style("font-family", "sans-serif")
+           .style("font-size", "10px")
+           .attr("transform", "translate(" + (cfg.w/2-levelFactor + cfg.ToRight) + ", " + (cfg.h/2-levelFactor) + ")")
+           .attr("fill", "#737373")
+           .text(cfg.Format((j+1)*cfg.maxValue/cfg.levels));
+        }
         // content
         data.forEach(function(d){
           d.axes.forEach(function(axis, i) {
