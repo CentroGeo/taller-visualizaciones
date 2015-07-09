@@ -15,6 +15,18 @@ function hazRadar(data){
 	RadarChart.defaultConfig.w = 500;
 	RadarChart.defaultConfig.h = 500;
 	RadarChart.defaultConfig.maxValue = 75;
+	RadarChart.defaultConfig.tooltipRenderer = function(d){
+		//console.log(d)
+		if (d.length > 1){
+			//hover:punto
+			miHTML = "<strong> Variable:" + d[0].axis + "</strong> <br>" +
+							 "<strong> Valor:" + d[0].value + "</strong>"
+		}else{
+			//hover:polígono
+			miHTML = "<strong> Tipo:" + d.className + "</strong> "
+		}
+		return miHTML
+	}
 
 	//Los datos
 	var d = [
@@ -51,8 +63,6 @@ function updateRadar(data){
 			]
 		}
 	]
-
-	console.log(d);
 
 	var game = svg.selectAll('g.colonia').data([d]);
 	game.enter().append('g').classed('colonia', 1);
