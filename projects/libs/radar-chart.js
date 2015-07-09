@@ -49,7 +49,6 @@ var RadarChart = {
             var x = d3.event.layerX;
                 y = d3.event.layerY;
 
-        //console.log(d3.event);
         tooltip.select("text").classed('visible', 1).style("fill", cfg.tooltipColor);
         var padding=5;
         var bbox = tooltip.select("text").text(msg).node().getBBox();
@@ -244,8 +243,6 @@ var RadarChart = {
         polygon.enter().append('polygon')
           .classed({area: 1, 'd3-enter': 1})
           .on('mouseover', function (dd){
-            console.log(dd);
-
             d3.event.stopPropagation();
             container.classed('focus', 1);
             d3.select(this).classed('focused', 1);
@@ -253,8 +250,6 @@ var RadarChart = {
             //setTooltip(dd.className);
           })
           .on('mouseout', function(){
-            //console.log('ouuuuut');
-
             d3.event.stopPropagation();
             container.classed('focus', 0);
             d3.select(this).classed('focused', 0);
