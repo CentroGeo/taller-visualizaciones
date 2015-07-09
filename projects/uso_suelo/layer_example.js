@@ -8,8 +8,8 @@ window.onload = function() {
 
     // Instantiate map on specified DOM element
     var map = new L.Map('map', options);
-    //En polygons vamos a guardar los features resaltados
-
+    //Añadimos los controles de navegación (del plugin Nav.Bar)
+    L.control.navbar().addTo(map);
     // Add a basemap to the map object just created
     L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', {
         attribution: 'Stamen'
