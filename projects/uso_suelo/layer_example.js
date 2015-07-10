@@ -98,7 +98,7 @@ window.onload = function() {
         // Traemos la geometría del polígono clickeado
         function fetchGeometry(id){
             var sql = new cartodb.SQL({ user: username, format: 'geojson' });
-            sql_stmt = "select cartodb_id, vivienda, comercio, equip, ocio, the_geom  from (" +layer.getSQL() + ") as _wrap where _wrap.cartodb_id="+ id
+            sql_stmt = "select cartodb_id, nombre, vivienda, comercio, equip, ocio, the_geom  from (" +layer.getSQL() + ") as _wrap where _wrap.cartodb_id="+ id
             sql.execute(sql_stmt).
             done(function(geojson) {
                 //Cuando el query regrese los datos, agarramos su geometría,

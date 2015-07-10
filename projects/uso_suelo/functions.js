@@ -11,7 +11,7 @@ function hazRadar(data){
 	//data es un json con los valores promedio de las variables
 
 	//TODO: el maxValue debería venir de una consulta
-
+	//Configuración del radar
 	RadarChart.defaultConfig.w = 500;
 	RadarChart.defaultConfig.h = 500;
 	RadarChart.defaultConfig.maxValue = 75;
@@ -19,11 +19,31 @@ function hazRadar(data){
 		//console.log(d)
 		if (d.length > 1){
 			//hover:punto
+			if(d[0].axis == 'vivienda'){
+				valor =  d[0].value*100
+			}else if(d[0].axis == 'vivienda'){
+				valor = d[0].value*10
+			}else{
+				valor = d[0].value
+			}
 			miHTML = "<strong> Variable:" + d[0].axis + "</strong> <br>" +
-							 "<strong> Valor:" + d[0].value + "</strong>"
+					 "<strong> Valor: </strong> <span style='color:red'>" + valor + "</span>"
 		}else{
 			//hover:polígono
-			miHTML = "<strong> Tipo:" + d.className + "</strong> "
+			if (d.className == 'promedios'){
+				miHTML = "<strong> Valores promedio</strong> <br> " +
+						 "<strong> Vivienda: </strong> <span style='color:red'>" + d.axes[0].value*100 + "</span> <br>" +
+						 "<strong> Comercio: </strong> <span style='color:red'>" + d.axes[1].value*10 + "</span> <br>" +
+						 "<strong> Servicios: </strong> <span style='color:red'>" + d.axes[2].value + "</span> <br>" +
+						 "<strong> Ocio: </strong> <span style='color:red'>" + d.axes[3].value + "</span>"
+			}else{
+				miHTML = "<strong> Colonia: </strong> <span style='color:red'>" + d.colonia + "</span> <br> " +
+						"<strong> Vivienda: </strong> <span style='color:red'>" + d.axes[0].value*100 + "</span> <br>" +
+						"<strong> Comercio: </strong> <span style='color:red'>" + d.axes[1].value*10 + "</span> <br>" +
+						"<strong> Servicios: </strong> <span style='color:red'>" + d.axes[2].value + "</span> <br>" +
+						"<strong> Ocio: </strong> <span style='color:red'>" + d.axes[3].value + "</span>"
+			}
+
 		}
 		return miHTML
 	}
@@ -55,6 +75,7 @@ function updateRadar(data){
 	var d = [
 		{
 			className: 'colonia',
+			colonia: variables.nombre,
 			axes: [
 			{axis: "vivienda", value: 0.01*variables.vivienda},
 			{axis: "comercio", value: 0.1*variables.comercio},
