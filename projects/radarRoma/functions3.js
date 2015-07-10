@@ -123,6 +123,7 @@ var chart = RadarChart.chart();
 RadarChart.defaultConfig.maxValue = 100;
 RadarChart.defaultConfig.transitionDuration = 250;
 RadarChart.defaultConfig.tickLabels = false;
+RadarChart.defaultConfig.tooltips = false;
 
 // funcion para hacer radar inicial
 function hazRadar(){
