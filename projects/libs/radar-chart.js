@@ -27,6 +27,7 @@ var RadarChart = {
     axisJoin: function(d, i) {
       return d.className || i;
     },
+    tooltips: true,
     tooltipRenderer: function (d){
       return "<strong>I'm a tooltip</strong>";
     },
@@ -39,41 +40,16 @@ var RadarChart = {
     var cfg = Object.create(RadarChart.defaultConfig);
     //var tip;
 
-    function setTooltip(msg){
-      if(msg == false){
-        tooltip.classed("visible", 0);
-        tooltip.select("rect").classed("visible", 0);
-      }else{
-        tooltip.classed("visible", 1);
-
-            var x = d3.event.layerX;
-                y = d3.event.layerY;
-
-        tooltip.select("text").classed('visible', 1).style("fill", cfg.tooltipColor);
-        var padding=5;
-        var bbox = tooltip.select("text").text(msg).node().getBBox();
-
-        tooltip.select("rect")
-        .classed('visible', 1).attr("x", 0)
-        .attr("x", bbox.x - padding)
-        .attr("y", bbox.y - padding)
-        .attr("width", bbox.width + (padding*2))
-        .attr("height", bbox.height + (padding*2))
-        .attr("rx","5").attr("ry","5")
-        .style("fill", cfg.backgroundTooltipColor).style("opacity", cfg.backgroundTooltipOpacity);
-        tooltip.attr("transform", "translate(" + x + "," + y + ")")
-
-      }
-    }
     function radar(selection) {
       selection.each(function(data) {
         var container = d3.select(this);
-        var tip = d3.tip()
-          .attr('class', 'd3-tip')
-          .offset([-10, 0])
-          .html(cfg.tooltipRenderer)
-        container.call(tip)
-
+        if (cfg.tooltips){
+          var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(cfg.tooltipRenderer);
+          container.call(tip);
+        }
         // allow simple notation
         data = data.map(function(datum) {
           if(datum instanceof Array) {
@@ -246,16 +222,19 @@ var RadarChart = {
             d3.event.stopPropagation();
             container.classed('focus', 1);
             d3.select(this).classed('focused', 1);
-            tip.show(dd);
-            //setTooltip(dd.className);
+            if (cfg.tooltips){
+              tip.show(dd);
+              //setTooltip(dd.className);
+            }
           })
           .on('mouseout', function(){
             d3.event.stopPropagation();
             container.classed('focus', 0);
             d3.select(this).classed('focused', 0);
-            tip.hide();
-            //setTooltip(false);
-
+            if (cfg.tooltips){
+              tip.hide();
+              //setTooltip(false);
+            }
           });
 
         polygon.exit()
@@ -318,12 +297,16 @@ var RadarChart = {
               d3.event.stopPropagation();
               container.classed('focus', 1);
               //container.select('.area.radar-chart-serie'+dd[1]).classed('focused', 1);
-              tip.show(dd);
+              if (cfg.tooltips){
+                tip.show(dd);
+              }
             })
             .on('mouseout', function(dd){
               d3.event.stopPropagation();
               container.classed('focus', 0);
-              tip.hide();
+              if (cfg.tooltips){
+                tip.hide();
+              }
               //container.select('.area.radar-chart-serie'+dd[1]).classed('focused', 0);
               //No idea why previous line breaks tooltip hovering area after hoverin point.
             });
