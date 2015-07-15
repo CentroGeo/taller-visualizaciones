@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Easy example | CartoDB.js</title>
+    <title>Usos de Suelo</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+    <link rel="stylesheet" href="../libs/radar-chart.css" />
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <link rel="stylesheet" href="../libs/Leaflet.NavBar/src/Leaflet.NavBar.css" />
     <style>
       html, body {
         height: 100%;
@@ -12,28 +15,84 @@
         margin: 0;
       }
 	   #map {
-		height: 100%;
-		width: 50%;
+  		height: 100%;
+  		width: 100%;
 	   }
 	   #chart {
-	   height: 100%;
-	   width: 50%;
-	   position: absolute;
-	   left: 50%;
-	   top: 0px;
+  	   height: 300px;
+  	   width: 250px;
+  	   position: absolute;
+  	   left: 5%;
+       bottom: 15%;
+       background-color: #191919;
+       opacity: 0.8;
+       padding: 1% 1% 1% 1%;
+       border-radius: 25px;
 	   }
-    </style>
+     .radar-container h2{
+       margin-top: 1%;
+       text-align: center;
+       color: #CCCCCC
+     }
+     .radar-chart .area {
+        fill-opacity: 0.7;
+      }
+      .radar-chart .focus .area {
+        fill-opacity: 0.3;
+      }
+      .radar-chart.focus .area.focused {
+        fill-opacity: 0.9;
+      }
+      .area.colonia, .colonia .circle {
+        fill: #483D8B;
+        stroke: none;
+      }
+      .area.promedios, .promedios .circle {
+        fill: #DC143C;
+        stroke: none;
+      }
+      .d3-tip {
+        line-height: 1;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 12px;
+      }
 
-    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+      /* Creates a small triangle extender for the tooltip */
+      .d3-tip:after {
+        box-sizing: border-box;
+        display: inline;
+        font-size: 10px;
+        width: 100%;
+        line-height: 1;
+        color: rgba(0, 0, 0, 0.8);
+        content: "\25BC";
+        position: absolute;
+        text-align: center;
+      }
+
+/* Style northward tooltips differently */
+      .d3-tip.n:after {
+        margin: -1px 0 0 0;
+        top: 100%;
+        left: 0;
+      }
+    </style>
   </head>
   <body>
     <div id="map"></div>
-	<div id="chart"></div>
+	<div id="chart", class='radar-container'>
+    <h2>Usos de suelo</h2>
+  </div>
     <!-- include cartodb.js library -->
-    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+  <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js"></script>
-	<script src="RadarChart.js"></script>
-	<script src="functions.js"></script>
-	
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+	<script src="../libs/radar-chart.js"></script>
+  <script src="../libs/Leaflet.NavBar/src/Leaflet.NavBar.js"></script>
+  <script src="functions.js"></script>
+	<script src="layer_example.js"></script>
+
   </body>
 </html>
