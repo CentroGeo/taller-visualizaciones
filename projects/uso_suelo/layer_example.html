@@ -16,17 +16,24 @@
       }
 	   #map {
   		height: 100%;
-  		width: 50%;
+  		width: 100%;
 	   }
 	   #chart {
-	   height: 100%;
-	   width: 50%;
-	   position: absolute;
-	   left: 50%;
-
-     padding-left: 5%;
-	   top: 0px;
+  	   height: 300px;
+  	   width: 250px;
+  	   position: absolute;
+  	   left: 5%;
+       bottom: 15%;
+       background-color: #191919;
+       opacity: 0.8;
+       padding: 1% 1% 1% 1%;
+       border-radius: 25px;
 	   }
+     .radar-container h2{
+       margin-top: 1%;
+       text-align: center;
+       color: #CCCCCC
+     }
      .radar-chart .area {
         fill-opacity: 0.7;
       }
@@ -46,11 +53,10 @@
       }
       .d3-tip {
         line-height: 1;
-        font-weight: bold;
         padding: 12px;
         background: rgba(0, 0, 0, 0.8);
         color: #fff;
-        border-radius: 2px;
+        border-radius: 12px;
       }
 
       /* Creates a small triangle extender for the tooltip */
@@ -76,7 +82,9 @@
   </head>
   <body>
     <div id="map"></div>
-	<div id="chart"></div>
+	<div id="chart", class='radar-container'>
+    <h2>Usos de suelo</h2>
+  </div>
     <!-- include cartodb.js library -->
   <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js"></script>

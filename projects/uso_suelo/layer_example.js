@@ -11,9 +11,16 @@ window.onload = function() {
     //Añadimos los controles de navegación (del plugin Nav.Bar)
     L.control.navbar().addTo(map);
     // Add a basemap to the map object just created
-    L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', {
-        attribution: 'Stamen'
-        }).addTo(map);
+    L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',{
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+    }).addTo(map);
+
+    // L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png', {
+    //     attribution: '\u00a9 <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors \u00a9 <a href=\"http://cartodb.com/attributions#basemaps\">CartoDB</a>'
+    // }).addTo(map);
+    // L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', {
+    //     attribution: 'Stamen'
+    //     }).addTo(map);
 
     //El estilo para la capa de usos de suelo
     s1 = "#usos_colonia{\
@@ -62,11 +69,11 @@ window.onload = function() {
     options = options || {}//Si no nos pasan opciones, instanciamos unas vacías
     //El estilo para resaltar el polígono
     var HIGHLIGHT_STYLE = {
-        weight: 3,
-        color: '#FFFFFF',
-        opacity: 1,
-        fillColor: '#FFFFFF',
-        fillOpacity: 0.3
+        weight: 0.8,
+        color: '#483D8B',
+        opacity: 0.5,
+        fillColor: '#483D8B',
+        fillOpacity: 0.8
     };
     //Colgamos el estilo a la propiedad style de las opciones (si no la tiene)
     style = options.style || HIGHLIGHT_STYLE;
@@ -104,7 +111,9 @@ window.onload = function() {
                 //Cuando el query regrese los datos, agarramos su geometría,
                 //la convertimos en capa de leaflet y la añadimos al mapa
                 var feature = geojson.features[0];
-                var geo = L.GeoJSON.geometryToLayer(feature.geometry);
+                //L.geoJson(feature,{style:HIGHLIGHT_STYLE}).addTo(map);
+                var geo = L.GeoJSON.geometryToLayer(feature.geometry,{style:HIGHLIGHT_STYLE});
+                geo.setStyle(style);
                 map.addLayer(geo)
                 //También la añadimos en polygonsHighlighted
                 polygonsHighlighted.push(geo)

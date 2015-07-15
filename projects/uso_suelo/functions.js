@@ -12,9 +12,10 @@ function hazRadar(data){
 
 	//TODO: el maxValue debería venir de una consulta
 	//Configuración del radar
-	RadarChart.defaultConfig.w = 500;
-	RadarChart.defaultConfig.h = 500;
+	RadarChart.defaultConfig.w = 250;
+	RadarChart.defaultConfig.h = 250;
 	RadarChart.defaultConfig.maxValue = 75;
+	RadarChart.defaultConfig.axisTextColor = "#CCCCCC"
 	RadarChart.defaultConfig.tooltipRenderer = function(d){
 		//console.log(d)
 		if (d.length > 1){
@@ -26,22 +27,22 @@ function hazRadar(data){
 			}else{
 				valor = d[0].value
 			}
-			miHTML = "<strong> Variable:" + d[0].axis + "</strong> <br>" +
-					 "<strong> Valor: </strong> <span style='color:red'>" + valor + "</span>"
+			miHTML = "Variable: " + d[0].axis + " <br>" +
+					 "Valor: <span style='color:red'>" + valor + "</span>"
 		}else{
 			//hover:polígono
 			if (d.className == 'promedios'){
-				miHTML = "<strong> Valores promedio</strong> <br> " +
-						 "<strong> Vivienda: </strong> <span style='color:red'>" + d.axes[0].value*100 + "</span> <br>" +
-						 "<strong> Comercio: </strong> <span style='color:red'>" + d.axes[1].value*10 + "</span> <br>" +
-						 "<strong> Servicios: </strong> <span style='color:red'>" + d.axes[2].value + "</span> <br>" +
-						 "<strong> Ocio: </strong> <span style='color:red'>" + d.axes[3].value + "</span>"
+				miHTML = "Valores promedio<br> " +
+						 " Vivienda:  <span style='color:red'>" + d.axes[0].value*100 + "</span> <br>" +
+						 " Comercio:  <span style='color:red'>" + d.axes[1].value*10 + "</span> <br>" +
+						 " Servicios:  <span style='color:red'>" + d.axes[2].value + "</span> <br>" +
+						 " Ocio:  <span style='color:red'>" + d.axes[3].value + "</span>"
 			}else{
-				miHTML = "<strong> Colonia: </strong> <span style='color:red'>" + d.colonia + "</span> <br> " +
-						"<strong> Vivienda: </strong> <span style='color:red'>" + d.axes[0].value*100 + "</span> <br>" +
-						"<strong> Comercio: </strong> <span style='color:red'>" + d.axes[1].value*10 + "</span> <br>" +
-						"<strong> Servicios: </strong> <span style='color:red'>" + d.axes[2].value + "</span> <br>" +
-						"<strong> Ocio: </strong> <span style='color:red'>" + d.axes[3].value + "</span>"
+				miHTML = "Colonia: <span style='color:red'>" + d.colonia + "</span> <br> " +
+						"Vivienda: <span style='color:red'>" + d.axes[0].value*100 + "</span> <br>" +
+						"Comercio: <span style='color:red'>" + d.axes[1].value*10 + "</span> <br>" +
+						"Servicios: <span style='color:red'>" + d.axes[2].value + "</span> <br>" +
+						"Ocio: <span style='color:red'>" + d.axes[3].value + "</span>"
 			}
 
 		}
