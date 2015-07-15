@@ -15,6 +15,7 @@ var RadarChart = {
     color: d3.scale.category10(),
     axisLine: true,
     axisText: true,
+    axisTextColor: "#000000",
     circles: true,
     radius: 5,
     ToRight: 5,//Cuantos px a la derecha de la linea van los números
@@ -184,7 +185,8 @@ var RadarChart = {
               })
               .text(function(d) { return d.name; })
               .attr('x', function(d, i){ return d.xOffset+ (cfg.w/2-radius2)+getHorizontalPosition(i, radius2, cfg.factorLegend); })
-              .attr('y', function(d, i){ return d.yOffset+ (cfg.h/2-radius2)+getVerticalPosition(i, radius2, cfg.factorLegend); });
+              .attr('y', function(d, i){ return d.yOffset+ (cfg.h/2-radius2)+getVerticalPosition(i, radius2, cfg.factorLegend); })
+              .attr('fill',cfg.axisTextColor);
           }
         }
         // tickLabels
