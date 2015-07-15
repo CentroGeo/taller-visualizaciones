@@ -1,8 +1,8 @@
 
 //Seleccionamos/creamos un elemento 'svg' y lo pegamos al body
 var svg = d3.select('#chart').append('svg')
-.attr('width', 600)
-.attr('height', 600);
+.attr('width', 250)
+.attr('height', 250);
 //Inicializamos la gráfica de radar
 //Estas variablesa son globales para usarlas en las dos funciones
 var chart = RadarChart.chart();
