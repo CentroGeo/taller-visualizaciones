@@ -256,6 +256,10 @@ function updateRadar(datos, date){
 
 		$(".remove").css("left", barPos + margin.left + "px");
 
+		/* TODO: hay que arreglar el flujo de como vienen los datos para pintar
+		// porque las estrucutras de datos de radar y stream son diferentes.
+		// Aqui la barra de streamgraph no se mueve cuando no hay datos en el radar
+
 	} else { // si no, mandale puros 0s
 		radarData = [
 			{
