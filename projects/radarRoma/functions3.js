@@ -1,24 +1,5 @@
 var dataFechas, fechas, categorias, series;
-
-// funcion para detectar cmabio en el tiempo de la capa de torque de cartoDB y
-// llamar actualizacion del radar
-function timeChange(torqueLayer) {
-	RadarChart.defaultConfig.tickLabels = true;
-	var torqueTime = $('#torque-time');
-	// each time time changes, move the slider
-	var currentDate = "2015-02-25";
-	torqueLayer.on('change:time', function(changes) {
-	  //convertir fecha de mm/dd/aaaa a aaaa-mm-dd
-	  var date = jQuery.datepicker.formatDate( "yy-mm-dd", new Date(changes.time));
-	  torqueTime.text(date);
-		// casi al principio cartoDB no trae bien la fecha y salen NaNs...
-	  if (date != "NaN-NaN-NaN" && date != currentDate){
-		  updateRadar(dataFechas, date);
-			currentDate = jQuery.datepicker.formatDate( "yy-mm-dd", new Date(changes.time));
-	  }
-	});
-}
-
+var x;
 function main() {
 	// crear mapa de Leaflet
 	var map = new L.Map('map', {
@@ -128,6 +109,8 @@ function hazQuery(layer) {
 
 	    series = fixDataStream(categorias, fechas);
 	    doStreamGraph(d3.values(series));
+			timeChange(layer);
+
 	  })
 	  .error(function(errors) {
 	    // errors contains a list of errors
@@ -135,12 +118,31 @@ function hazQuery(layer) {
 	  });
 		// una vez que ya tengas esos datos, ejecuta el cambio de tiempo de la
 		// capa de torque de cartoDB
-		timeChange(layer);
+		//timeChange(layer);
 	})
 	.error(function(errors) {
 		// errors contains a list of errors
 		console.log("errors:" + errors);
 	})
+}
+
+// funcion para detectar cambio en el tiempo de la capa de torque de cartoDB y
+// llamar actualizacion del radar
+function timeChange(torqueLayer) {
+	RadarChart.defaultConfig.tickLabels = true;
+	var torqueTime = $('#torque-time');
+	// each time time changes, move the slider
+	var currentDate = "2015-02-25";
+	torqueLayer.on('change:time', function(changes) {
+	  //convertir fecha de mm/dd/aaaa a aaaa-mm-dd
+	  var date = jQuery.datepicker.formatDate( "yy-mm-dd", new Date(changes.time));
+	  torqueTime.text(date);
+		// casi al principio cartoDB no trae bien la fecha y salen NaNs...
+	  if (date != "NaN-NaN-NaN" && date != currentDate){
+		  updateRadar(dataFechas, date);
+			currentDate = jQuery.datepicker.formatDate( "yy-mm-dd", new Date(changes.time));
+	  }
+	});
 }
 
 //Seleccionamos/creamos un elemento 'svg' y lo pegamos al body
@@ -241,9 +243,17 @@ function fixData(datos){
 
 // funcion para actualizar radar
 function updateRadar(datos, date){
+
 	// si hay datos para la fecha que se esta desplegando
 	if (datos[$('#torque-time').text()+"T00:00:00Z"] != undefined) {
 		radarData = datos[$('#torque-time').text()+"T00:00:00Z"];
+
+		// actualiza la posicion de la barra en el streamChart
+		var format = d3.time.format("%Y-%m-%d");
+		var margin = {top: 20, right: 40, bottom: 30, left: 30};
+		barPos = x(format.parse($('#torque-time').text()));
+		$(".remove").css("left", barPos + margin.left + "px");
+
 	} else { // si no, mandale puros 0s
 		radarData = [
 			{
@@ -263,6 +273,7 @@ function updateRadar(datos, date){
 	var game = svg.selectAll('g.diario').data([radarData]);
 	game.enter().append('g').classed('diario', 1);
 	game.call(chart);
+
 }
 
 // funcion para arreglar datos para el streamGraph
@@ -297,11 +308,11 @@ function fixDataStream(cats, dates){
 function doStreamGraph(series) {
 
   var svgWidth = 960,
-    svgHeight = 500;
+    svgHeight = 450;
 
   var margin = {top: 20, right: 40, bottom: 30, left: 30};
-  var width = 960 - margin.left - margin.right;
-  var height = 500 - margin.top - margin.bottom;
+  var width = svgWidth - margin.left - margin.right;
+  var height = svgHeight - margin.top - margin.bottom;
 
   stack = d3.layout.stack().offset("zero");
   layers0 = stack(series);
@@ -316,7 +327,7 @@ function doStreamGraph(series) {
   minDate = d3.min(series[d3.keys(series)[0]], function(c) { return c.x; })
   maxDate = d3.max(series[d3.keys(series)[0]], function(c) { return c.x; })
 
-  var x = d3.time.scale()
+  x = d3.time.scale()
     .domain([minDate, maxDate])
     .range([0, width]);
 
@@ -326,6 +337,7 @@ function doStreamGraph(series) {
 
   var xAxis = d3.svg.axis()
     .scale(x)
+		//.tickFormat(d3.time.format("%Y-%m-%d"));
     .tickFormat(d3.time.format("%d %b"+" '"+"%y"));
     //.tickFormat(d3.time.format("%d"))
     //.ticks(d3.time.days, 1);
@@ -382,13 +394,16 @@ function doStreamGraph(series) {
     .style("left", "0px")
     .style("background", "#00AAAA");
 
-  d3.selectAll("#graph")
-    .on("mousemove", function(){
-      mousex = d3.mouse(this);
-      mousex = mousex[0] + 5;
-      vertical.style("left", mousex + "px" )})
-    .on("mouseover", function(){
-      mousex = d3.mouse(this);
-      mousex = mousex[0] + 5;
-      vertical.style("left", mousex + "px")});
+  // d3.selectAll("#graph")
+  //   .on("mousemove", function(){
+  //     mousex = d3.mouse(this);
+  //     mousex = mousex[0] + 5;
+  //     vertical.style("left", mousex + "px" )})
+  //   .on("mouseover", function(){
+  //     mousex = d3.mouse(this);
+	// 		//console.log(mousex);
+	// 		console.log(mousex[0]+"-"+x.invert(mousex[0]));
+	// 		//console.log(mousex.scale);
+  //     mousex = mousex[0] + 5;
+  //     vertical.style("left", mousex + "px")});
 }
