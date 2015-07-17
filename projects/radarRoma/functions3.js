@@ -63,12 +63,13 @@ function main() {
 			tile_style: CARTOCSS
         }
 	 }).done(function(layer) {
-		// cuando acabes de crear la capa, agregala al mapa
-		map.addLayer(layer);
-		// luego haz el query de los datos de esa capa
-		hazQuery(layer);
-		// y haz un radar inicial
-		hazRadar();
+			// cuando acabes de crear la capa, agregala al mapa
+			map.addLayer(layer);
+			layer.pause();
+			// luego haz el query de los datos de esa capa
+			hazQuery(layer);
+			// y haz un radar inicial
+			hazRadar();
 	 });
 }
 // correr todo el show desde el prinicipio
@@ -252,6 +253,7 @@ function updateRadar(datos, date){
 		var format = d3.time.format("%Y-%m-%d");
 		var margin = {top: 20, right: 40, bottom: 30, left: 30};
 		barPos = x(format.parse($('#torque-time').text()));
+
 		$(".remove").css("left", barPos + margin.left + "px");
 
 	} else { // si no, mandale puros 0s
@@ -347,7 +349,9 @@ function doStreamGraph(series) {
 
   var color = d3.scale.ordinal()
     //.range(["#aad", "#556"]);
-    .range(["#980043", "#DD1C77", "#DF65B0", "#C994C7", "#D4B9DA", "#F1EEF6"]);
+    //.range(["#980043", "#DD1C77", "#DF65B0", "#C994C7", "#D4B9DA", "#F1EEF6"]);
+		// vienen en orden los colores: establecimientos, servicios, bienes, movilidad, basura, seguridad
+		.range(['#229A00', '#50a3f4', '#ff00b5', '#0F3B82', '#B40903', '#777474']);
     /* TODO: usar n (numero de clases) para poner n colores*/
 
   var area = d3.svg.area()
@@ -366,7 +370,8 @@ function doStreamGraph(series) {
     .enter().append("path")
     .attr("class", "layer")
     .attr("d", area)
-    .style("fill", function() { return color(Math.random()); });
+		.style("fill", function() { return color(Math.random()); })
+		.style("opacity", ".5");
 
   svg.append("g")
     .attr("class", "x axis")
